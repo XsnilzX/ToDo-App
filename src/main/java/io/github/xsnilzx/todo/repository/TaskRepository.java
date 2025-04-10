@@ -10,5 +10,3 @@ public interface TaskRepository {
     void delete(Long id);
     // Weitere Methoden
 }
-
-// Implementierung (z.B. InMemoryTaskRepository oder DatabaseTaskRepository)
