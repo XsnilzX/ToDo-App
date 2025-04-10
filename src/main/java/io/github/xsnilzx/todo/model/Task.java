@@ -1,6 +1,7 @@
 package io.github.xsnilzx.todo.model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Task {
     private Long id;
@@ -61,4 +62,21 @@ public class Task {
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
+
+    @Override
+   public boolean equals(Object o) {
+       if (this == o) return true;
+       if (o == null || getClass() != o.getClass()) return false;
+       Task task = (Task) o;
+       return completed == task.completed &&
+               Objects.equals(id, task.id) &&
+               Objects.equals(title, task.title) &&
+               Objects.equals(description, task.description) &&
+               Objects.equals(dueDate, task.dueDate);
+   }
+
+   @Override
+   public int hashCode() {
+       return Objects.hash(id, title, description, completed, dueDate);
+   }
 }
