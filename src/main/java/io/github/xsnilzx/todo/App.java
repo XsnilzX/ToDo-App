@@ -12,28 +12,30 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class App extends Application {
-    private TaskStorage taskStorage;
-    private FileBackedTaskRepository taskRepository;
-    private TaskService taskService;
-    private TaskController taskController;
-
+    private static TaskStorage taskStorage;
+    private static TaskRepository taskRepository;
+    private static TaskService taskService;
+    private static TaskController taskController;
+    
     @Override
     public void start(Stage primaryStage) {
-        // UI erstellen
+        // Verwende die in main() erstellten Instanzen
+        // View mit dem Controller erstellen
         TaskView view = new TaskView(taskController);
-        Scene scene = new Scene(view, 600, 400);
         
+        Scene scene = new Scene(view, 600, 400);
         primaryStage.setTitle("ToDo App");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
     public static void main(String[] args) {
-        TaskStorage taskStorage = new TaskStorage();
-        FileBackedTaskRepository taskRepository = new FileBackedTaskRepository(taskStorage);
-        TaskService taskService = new TaskService(taskStorage);
-        TaskController taskController = new TaskController(taskService);
-
+        // Initialisiere alle Objekte vor dem Start der Anwendung
+        taskStorage = new TaskStorage();
+        taskRepository = new FileBackedTaskRepository(taskStorage);
+        taskService = new TaskService(taskRepository);  // Übergebe repository, nicht storage
+        taskController = new TaskController(taskService);
+        
         // Start GUI
         launch(args);
     }
