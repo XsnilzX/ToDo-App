@@ -8,6 +8,7 @@ public class Task {
     private String title;
     private String description;
     private boolean completed;
+    private LocalDate date;
     private LocalDate dueDate;
     
     // Konstruktoren
@@ -15,10 +16,12 @@ public class Task {
 
     }
 
-    public Task(String title, String description) {
+    public Task(String title, String description, LocalDate dueDate) {
         this.title = title;
         this.description = description;
         this.completed = false;
+        this.date = LocalDate.now().plusDays(7);
+        this.dueDate = dueDate;
     }
 
     // Getter und Setter
@@ -55,6 +58,14 @@ public class Task {
         this.completed = completed;
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+    
     public LocalDate getDueDate() {
         return dueDate;
     }

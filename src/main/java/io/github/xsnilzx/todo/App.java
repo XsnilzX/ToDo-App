@@ -8,6 +8,7 @@ import io.github.xsnilzx.todo.view.TaskView;
 import io.github.xsnilzx.todo.controller.TaskController;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -22,11 +23,20 @@ public class App extends Application {
         // Verwende die in main() erstellten Instanzen
         // View mit dem Controller erstellen
         TaskView view = new TaskView(taskController);
+
+        
         
         Scene scene = new Scene(view, 600, 400);
         primaryStage.setTitle("ToDo App");
+        setAppIcon(primaryStage);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    public void setAppIcon(Stage stage) {
+        Image icon = new Image(getClass().getResourceAsStream("/icons/Icon.png"));
+        stage.getIcons().clear();
+        stage.getIcons().add(icon);
     }
 
     public static void main(String[] args) {

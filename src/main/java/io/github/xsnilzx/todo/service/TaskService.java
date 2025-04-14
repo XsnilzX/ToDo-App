@@ -1,4 +1,5 @@
 package io.github.xsnilzx.todo.service;
+import java.time.LocalDate;
 import java.util.List;
 import io.github.xsnilzx.todo.model.Task;
 import io.github.xsnilzx.todo.repository.TaskRepository;
@@ -10,8 +11,8 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
     
-    public void createTask(String title, String description) {
-        Task newTask = new Task(title, description);
+    public void createTask(String title, String description, LocalDate dueDate) {
+        Task newTask = new Task(title, description, dueDate);
         // Die save-Methode kümmert sich um das Hinzufügen zur Liste
         taskRepository.save(newTask);
     }

@@ -1,5 +1,7 @@
 package io.github.xsnilzx.todo.view;
 
+import java.time.LocalDate;
+
 import io.github.xsnilzx.todo.controller.TaskController;
 import io.github.xsnilzx.todo.model.Task;
 import javafx.geometry.Insets;
@@ -8,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.DatePicker;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -18,6 +21,7 @@ public class TaskView extends BorderPane {
     private ListView<Task> taskListView;
     private TextField titleField;
     private TextField descriptionField;
+    private DatePicker datePicker;
     
     public TaskView(TaskController controller) {
         this.controller = controller;
@@ -55,35 +59,41 @@ public class TaskView extends BorderPane {
         
         descriptionField = new TextField();
         descriptionField.setPromptText("Beschreibung (optional)");
+
+        datePicker = new DatePicker();
+        datePicker.setPromptText("Fälligkeitsdatum");
+        datePicker.setValue(LocalDate.now());;
         
         HBox buttonBar = new HBox(10);
         Button addButton = new Button("Hinzufügen");
-        Button clearButton = new Button("Zurücksetzen");
+        // Button clearButton = new Button("Zurücksetzen");
         
         // Make Add button wider
         addButton.setPrefWidth(150);
         
-        buttonBar.getChildren().addAll(addButton, clearButton);
+        buttonBar.getChildren().addAll(addButton);
         buttonBar.setAlignment(Pos.CENTER_RIGHT);
         
-        inputForm.getChildren().addAll(newTaskLabel, titleField, descriptionField, buttonBar);
+        inputForm.getChildren().addAll(newTaskLabel, titleField, descriptionField, datePicker, buttonBar);
         setBottom(inputForm);
         
         // Event handlers
         addButton.setOnAction(e -> {
             if (!titleField.getText().trim().isEmpty()) {
-                controller.addTask(titleField.getText().trim(), descriptionField.getText().trim());
+                LocalDate dueDate = datePicker.getValue();
+                controller.addTask(titleField.getText().trim(), descriptionField.getText().trim(), dueDate);
                 clearFields();
                 refreshTaskList();
             }
         });
         
-        clearButton.setOnAction(e -> clearFields());
+        // clearButton.setOnAction(e -> clearFields());
     }
     
     private void clearFields() {
         titleField.clear();
         descriptionField.clear();
+        datePicker.setValue(LocalDate.now());
         titleField.requestFocus();
     }
     

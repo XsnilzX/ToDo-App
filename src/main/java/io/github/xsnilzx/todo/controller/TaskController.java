@@ -1,5 +1,7 @@
 package io.github.xsnilzx.todo.controller;
 
+import java.time.LocalDate;
+
 import io.github.xsnilzx.todo.model.Task;
 import io.github.xsnilzx.todo.service.TaskService;
 import javafx.collections.FXCollections;
@@ -14,8 +16,8 @@ public class TaskController {
         refreshTasks();
     }
     
-    public void addTask(String title, String description) {
-        service.createTask(title, description);
+    public void addTask(String title, String description, LocalDate dueDate) {
+        service.createTask(title, description, dueDate);
         refreshTasks();
     }
     
