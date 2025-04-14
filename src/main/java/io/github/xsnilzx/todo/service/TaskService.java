@@ -1,27 +1,37 @@
 package io.github.xsnilzx.todo.service;
-
-import io.github.xsnilzx.todo.model.Task;
-import io.github.xsnilzx.todo.model.TaskStorage;
 import java.util.List;
+import io.github.xsnilzx.todo.model.Task;
+import io.github.xsnilzx.todo.repository.TaskRepository;
 
 public class TaskService {
-
-    private final TaskStorage taskStorage;
-
-    public TaskService(TaskStorage taskStorage) {
-        this.taskStorage = taskStorage;
+    private final TaskRepository taskRepository;
+    
+    public TaskService(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
     }
-
+    
     public void createTask(String title, String description) {
         Task newTask = new Task(title, description);
-        List<Task> tasks = taskStorage.loadTasksFromFile();
-        tasks.add(newTask);
-        taskStorage.saveTasksToFile(tasks);
+        // Die save-Methode kümmert sich um das Hinzufügen zur Liste
+        taskRepository.save(newTask);
     }
-
+    
     public List<Task> getAllTasks() {
-        return taskStorage.loadTasksFromFile();
+        return taskRepository.findAll();
     }
-
-    // Weitere Methoden zur Bearbeitung von Aufgaben (z.B. als erledigt markieren, löschen, etc.)
+    
+    public void updateTask(Task task) {
+        // Die save-Methode sollte auch Updates verarbeiten können
+        taskRepository.save(task);
+    }
+    
+    public Task getTaskById(Long id) {
+        return taskRepository.findById(id);
+    }
+    
+    public void deleteTask(Long id) {
+        taskRepository.delete(id);
+    }
+    
+    // Weitere Methoden zur Bearbeitung von Aufgaben können hier hinzugefügt werden
 }

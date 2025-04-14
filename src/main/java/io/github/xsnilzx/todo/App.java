@@ -2,7 +2,6 @@ package io.github.xsnilzx.todo;
 
 import io.github.xsnilzx.todo.model.TaskStorage;
 import io.github.xsnilzx.todo.repository.FileBackedTaskRepository;
-import io.github.xsnilzx.todo.repository.InMemoryTaskRepository;
 import io.github.xsnilzx.todo.repository.TaskRepository;
 import io.github.xsnilzx.todo.service.TaskService;
 import io.github.xsnilzx.todo.view.TaskView;
@@ -12,28 +11,31 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class App extends Application {
-    private TaskStorage taskStorage;
-    private FileBackedTaskRepository taskRepository;
-    private TaskService taskService;
-    private TaskController taskController;
-
+    // Statische Felder für den Zugriff aus start()
+    private static TaskStorage taskStorage;
+    private static TaskRepository taskRepository;
+    private static TaskService taskService;
+    private static TaskController taskController;
+    
     @Override
     public void start(Stage primaryStage) {
-        // UI erstellen
+        // Verwende die in main() erstellten Instanzen
+        // View mit dem Controller erstellen
         TaskView view = new TaskView(taskController);
-        Scene scene = new Scene(view, 600, 400);
         
+        Scene scene = new Scene(view, 600, 400);
         primaryStage.setTitle("ToDo App");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
     public static void main(String[] args) {
-        TaskStorage taskStorage = new TaskStorage();
-        FileBackedTaskRepository taskRepository = new FileBackedTaskRepository(taskStorage);
-        TaskService taskService = new TaskService(taskStorage);
-        TaskController taskController = new TaskController(taskService);
-
+        // Initialisiere alle Objekte vor dem Start der Anwendung
+        taskStorage = new TaskStorage();
+        taskRepository = new FileBackedTaskRepository(taskStorage);
+        taskService = new TaskService(taskRepository);
+        taskController = new TaskController(taskService);
+        
         // Start GUI
         launch(args);
     }

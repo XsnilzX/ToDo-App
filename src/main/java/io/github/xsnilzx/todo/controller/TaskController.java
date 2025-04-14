@@ -19,9 +19,8 @@ public class TaskController {
         refreshTasks();
     }
     
-    public void completeTask(Long id) {
-        // Logik zum Abhaken einer Aufgabe
-        refreshTasks();
+    public void updateTask(Task task) {
+        service.updateTask(task);
     }
     
     private void refreshTasks() {
