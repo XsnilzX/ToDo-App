@@ -69,45 +69,31 @@ Todo-App/
 ├── LICENSE
 ├── pom.xml
 ├── README.md
-├── src
-│   ├── main
-│   │   ├── java
-│   │   │   └── io
-│   │   │       └── github
-│   │   │           └── xsnilzx
-│   │   │               ├── App.java
-│   │   │               ├── controller
-│   │   │               │   └── TaskController.java
-│   │   │               ├── model
-│   │   │               │   └── Task.java
-│   │   │               ├── repository
-│   │   │               │   └── TaskRepository.java
-│   │   │               ├── service
-│   │   │               │   └── TaskService.java
-│   │   │               ├── todo
-│   │   │               └── view
-│   │   │                   └── TaskView.java
-│   │   └── resources
-│   └── test
-│       └── java
-├── target
-│   ├── classes
-│   │   └── io
-│   │       └── github
-│   │           └── xsnilzx
-│   │               ├── Main.class
-│   │               └── todo
-│   │                   └── App.class
-│   ├── generated-sources
-│   │   └── annotations
-│   ├── maven-status
-│   │   └── maven-compiler-plugin
-│   │       └── compile
-│   │           └── default-compile
-│   │               ├── createdFiles.lst
-│   │               └── inputFiles.lst
-│   └── test-classes
-└── test.txt
+└── src
+    └── main
+        ├── java
+        │   └── io
+        │       └── github
+        │           └── xsnilzx
+        │               └── todo
+        │                   ├── App.java
+        │                   ├── controller
+        │                   │   └── TaskController.java
+        │                   ├── model
+        │                   │   ├── Task.java
+        │                   │   └── TaskStorage.java
+        │                   ├── repository
+        │                   │   ├── FileBackedTaskRepository.java
+        │                   │   ├── InMemoryTaskRepository.java
+        │                   │   └── TaskRepository.java
+        │                   ├── service
+        │                   │   └── TaskService.java
+        │                   └── view
+        │                       ├── TaskCell.java
+        │                       └── TaskView.java
+        └── resources
+            └── icons
+                └── Icon.png
 ```
 
 ## Verwendung
