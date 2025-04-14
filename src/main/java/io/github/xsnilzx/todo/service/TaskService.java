@@ -1,27 +1,24 @@
 package io.github.xsnilzx.todo.service;
 
 import io.github.xsnilzx.todo.model.Task;
-import io.github.xsnilzx.todo.model.TaskStorage;
+import io.github.xsnilzx.todo.repository.TaskRepository;
 import java.util.List;
 
 public class TaskService {
-
-    private final TaskStorage taskStorage;
-
-    public TaskService(TaskStorage taskStorage) {
-        this.taskStorage = taskStorage;
+    private final TaskRepository taskRepository;
+    
+    public TaskService(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
     }
-
+    
     public void createTask(String title, String description) {
         Task newTask = new Task(title, description);
-        List<Task> tasks = taskStorage.loadTasksFromFile();
-        tasks.add(newTask);
-        taskStorage.saveTasksToFile(tasks);
+        taskRepository.save(newTask);
     }
-
+    
     public List<Task> getAllTasks() {
-        return taskStorage.loadTasksFromFile();
+        return taskRepository.findAll();
     }
-
-    // Weitere Methoden zur Bearbeitung von Aufgaben (z.B. als erledigt markieren, löschen, etc.)
+    
+    // Weitere Methoden...
 }

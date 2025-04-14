@@ -5,44 +5,50 @@ import io.github.xsnilzx.todo.model.TaskStorage;
 import java.util.List;
 
 public class FileBackedTaskRepository implements TaskRepository {
-
-    private final InMemoryTaskRepository inMemoryRepo;
     private final TaskStorage taskStorage;
-
+    
     public FileBackedTaskRepository(TaskStorage taskStorage) {
-        this.inMemoryRepo = new InMemoryTaskRepository();
         this.taskStorage = taskStorage;
-        
-        // Lade bestehende Aufgaben beim Start
-        List<Task> tasks = taskStorage.loadTasksFromFile();
-        tasks.forEach(inMemoryRepo::save);
     }
-
+    
     @Override
     public List<Task> findAll() {
-        return inMemoryRepo.findAll();
+        return taskStorage.loadTasksFromFile();
     }
-
+    
     @Override
     public Task findById(Long id) {
-        return inMemoryRepo.findById(id);
+        return taskStorage.loadTasksFromFile().stream()
+                .filter(task -> id.equals(task.getId()))
+                .findFirst()
+                .orElse(null);
     }
     
     @Override
     public Task save(Task task) {
-        Task savedTask = inMemoryRepo.save(task);
-        persistTasks();
-        return savedTask;
+        List<Task> tasks = taskStorage.loadTasksFromFile();
+        
+        // If task has an ID, it's an update
+        if (task.getId() != null) {
+            tasks.removeIf(t -> t.getId().equals(task.getId()));
+        } else {
+            // Generate a new ID (simple approach)
+            Long newId = tasks.stream()
+                    .mapToLong(Task::getId)
+                    .max()
+                    .orElse(0) + 1;
+            task.setId(newId);
+        }
+        
+        tasks.add(task);
+        taskStorage.saveTasksToFile(tasks);
+        return task;
     }
     
     @Override
     public void delete(Long id) {
-        inMemoryRepo.delete(id);
-        persistTasks();
-    }
-
-    private void persistTasks() {
-        List<Task> tasks = inMemoryRepo.findAll();
+        List<Task> tasks = taskStorage.loadTasksFromFile();
+        tasks.removeIf(task -> id.equals(task.getId()));
         taskStorage.saveTasksToFile(tasks);
     }
 }
