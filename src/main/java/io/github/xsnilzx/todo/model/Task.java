@@ -2,26 +2,35 @@ package io.github.xsnilzx.todo.model;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Task {
+
+    private static final AtomicLong ID_GENERATOR = new AtomicLong(1);
     private Long id;
     private String title;
     private String description;
     private boolean completed;
     private LocalDate date;
     private LocalDate dueDate;
-    
-    // Konstruktoren
-    public Task() {
-
-    }
 
     public Task(String title, String description, LocalDate dueDate) {
+        this.id = ID_GENERATOR.getAndIncrement();
         this.title = title;
         this.description = description;
         this.completed = false;
         this.date = LocalDate.now().plusDays(7);
         this.dueDate = dueDate;
+    }
+
+    // Konstruktor für das Laden aus JSON
+    public Task() {
+        // Leerer Konstruktor für JSON-Deserialisierung
+    }
+
+    // Methode zur Initialisierung des ID-Generators nach dem Laden
+    public static void updateIdGenerator(long maxId) {
+        ID_GENERATOR.set(Math.max(ID_GENERATOR.get(), maxId + 1));
     }
 
     // Getter und Setter
@@ -65,7 +74,7 @@ public class Task {
     public void setDate(LocalDate date) {
         this.date = date;
     }
-    
+
     public LocalDate getDueDate() {
         return dueDate;
     }
@@ -79,11 +88,13 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return completed == task.completed &&
-                Objects.equals(id, task.id) &&
-                Objects.equals(title, task.title) &&
-                Objects.equals(description, task.description) &&
-                Objects.equals(dueDate, task.dueDate);
+        return (
+            completed == task.completed &&
+            Objects.equals(id, task.id) &&
+            Objects.equals(title, task.title) &&
+            Objects.equals(description, task.description) &&
+            Objects.equals(dueDate, task.dueDate)
+        );
     }
 
     @Override

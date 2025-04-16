@@ -17,3 +17,5 @@ buildNumber.properties
 .classpath
 # Task save File
 tasks.json
+# Zededitor
+.settings/

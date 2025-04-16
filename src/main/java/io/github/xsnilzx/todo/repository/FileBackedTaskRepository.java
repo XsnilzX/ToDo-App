@@ -12,9 +12,19 @@ public class FileBackedTaskRepository implements TaskRepository {
     public FileBackedTaskRepository(TaskStorage taskStorage) {
         this.inMemoryRepo = new InMemoryTaskRepository();
         this.taskStorage = taskStorage;
-        
+
         // Lade bestehende Aufgaben beim Start
         List<Task> tasks = taskStorage.loadTasksFromFile();
+
+        if (!tasks.isEmpty()) {
+            long maxId = tasks
+                .stream()
+                .mapToLong(task -> task.getId() != null ? task.getId() : 0)
+                .max()
+                .orElse(0);
+            Task.updateIdGenerator(maxId);
+        }
+
         tasks.forEach(inMemoryRepo::save);
     }
 
@@ -27,14 +37,14 @@ public class FileBackedTaskRepository implements TaskRepository {
     public Task findById(Long id) {
         return inMemoryRepo.findById(id);
     }
-    
+
     @Override
     public Task save(Task task) {
         Task savedTask = inMemoryRepo.save(task);
         persistTasks();
         return savedTask;
     }
-    
+
     @Override
     public void delete(Long id) {
         inMemoryRepo.delete(id);
